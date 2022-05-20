@@ -1,6 +1,7 @@
 import Book from "../model/Book";
 import mongoose from 'mongoose';
 
+//Get all books
 export const getAllBooks = async (req, res, next) => {
   let books;
   try {
@@ -14,6 +15,7 @@ export const getAllBooks = async (req, res, next) => {
   return res.status(200).json({ books });
 };
 
+//add new book
 export const addBook = async (req, res, next) => {
   const { title, author, description, image, pdf, category, isAvailable } =
     req.body;
@@ -33,7 +35,7 @@ export const addBook = async (req, res, next) => {
   }
   return res.status(200).json({ book });
 };
-
+//delete a book by Id
 export const deleteBook = async (req, res, next) => {
   const id = await Book.findByIdAndDelete(req.params.id);
 
@@ -42,6 +44,7 @@ export const deleteBook = async (req, res, next) => {
   return (res.status(200).json({ Book }));
 };
 
+//Get a book by Id
 export const getIdBook = async (req, res, next) => {
   const id = await Book.findById(req.params.id);
 
