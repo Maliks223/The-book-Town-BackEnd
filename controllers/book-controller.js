@@ -30,7 +30,7 @@ export const getById = async (req, res, next) => {
 export const addBook = async (req, res, next) => {
   const { title, author, description, image, pdf, category, isAvailable } =
     req.body;
-  const book = new Book({
+  let book = new Book({
     title,
     author,
     description,

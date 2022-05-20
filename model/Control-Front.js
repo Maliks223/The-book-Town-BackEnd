@@ -6,7 +6,7 @@ const controlFront = new Schema({
   aboutUS: {
     type: String,
   },
-  banners: {
+  banner: {
     type: String,
   },
 });
