@@ -1,4 +1,5 @@
 import Book from "../model/Book";
+import mongoose from 'mongoose';
 
 export const getAllBooks = async (req, res, next) => {
   let books;
@@ -31,4 +32,12 @@ export const addBook = async (req, res, next) => {
     return console.log(err);
   }
   return res.status(200).json({ book });
+};
+
+export const deleteBook = async (req, res, next) => {
+  const id = await Book.findByIdAndDelete(req.params.id);
+
+  if (!id)
+  return(res.status(404).send("Book not found"));
+  return (res.status(200).json({ Book }));
 };
