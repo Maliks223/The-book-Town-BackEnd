@@ -41,3 +41,12 @@ export const deleteBook = async (req, res, next) => {
   return(res.status(404).send("Book not found"));
   return (res.status(200).json({ Book }));
 };
+
+export const getIdBook = async (req, res, next) => {
+  const id = await Book.findById(req.params.id);
+
+  if (!id)
+  return(res.status(404).send("Book not found"));
+  return (res.status(200).json({ id }));
+}
+
