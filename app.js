@@ -1,10 +1,12 @@
 import express from "express";
 import mongoose from "mongoose";
 import bookRouter from "./routes/book-routes";
+import userRouter from "./routes/user-routes";
 
 const app = express();
 app.use(express.json());
 app.use("/books", bookRouter);
+app.use("/user", userRouter);
 
 mongoose
   .connect(

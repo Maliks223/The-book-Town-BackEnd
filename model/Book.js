@@ -23,12 +23,9 @@ const bookSchema = new Schema({
     type: String,
     required: true,
   },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
   isAvailable: {
     type: Boolean,
+    required: true,
   },
   dateFrom: {
     type: Date,
@@ -38,6 +35,10 @@ const bookSchema = new Schema({
   },
   pdf: {
     type: String,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
 });
 
