@@ -1,4 +1,6 @@
 import User from "../model/User";
+import Request from "../model/Request";
+import mongoose from "mongoose";
 
 export const allRequests = async (req, res, next) => {
   let users;
@@ -13,7 +15,7 @@ export const allRequests = async (req, res, next) => {
   return res.status(200).json({ users });
 };
 //////////////////////////////////////////////////////// for USER ONLY
-export const lendRequest = async (req, res, next) => {
+export const userForm = async (req, res, next) => {
   const { name, email, phone, books } = req.body;
   const user = new User({
     name,
@@ -42,4 +44,31 @@ export const deleteRequest = async (req, res, next) => {
     return res.status(500).json({ message: "request not Found" });
   }
   return res.status(200).json({ message: "request Deleted" });
+};
+
+export const lendRequest = async (req, res, next) => {
+  const { book, user, dateFrom, dateTo } = req.body;
+  let existingUser;
+  try {
+    existingUser = await User.findById(user);
+  } catch (err) {
+    return console.log(err);
+  }
+  let request = new Request({
+    book,
+    user,
+    dateFrom,
+    dateTo,
+  });
+  try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    await request.save({ session });
+    existingUser.books.push(book);
+    await existingUser.save({ session });
+    await session.commitTransaction();
+  } catch (err) {
+    return console.log(err);
+  }
+  return res.status(200).json({ request });
 };

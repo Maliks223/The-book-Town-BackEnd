@@ -1,4 +1,6 @@
 import Book from "../model/Book";
+import User from "../model/User";
+
 
 export const getAllBooks = async (req, res, next) => {
   let books;
@@ -68,4 +70,24 @@ export const deleteBook = async (req, res, next) => {
     return res.status(500).json({ message: "Book not Found" });
   }
   return res.status(200).json({ message: "Book Deleted" });
+};
+
+export const getByUserId = async (req, res, next) => {
+  const userId = req.params.id;
+  let userBooks;
+  try {
+    userBooks = await User.findById(userId).populate("books");
+  } catch (err) {
+    return console.log(err);
+  }
+    if (!userBooks) {
+      return res
+        .status(400)
+        .json({ message: "Unable to find User by this ID" });
+    }
+
+  if (!userBooks) {
+    return res.status(404).json({ message: "no Book founds" });
+  }
+  return res.status(200).json({ books: userBooks });
 };

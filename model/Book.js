@@ -27,18 +27,8 @@ const bookSchema = new Schema({
     type: Boolean,
     required: true,
   },
-  dateFrom: {
-    type: Date,
-  },
-  dateTo: {
-    type: Date,
-  },
   pdf: {
     type: String,
-  },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
   },
 });
 

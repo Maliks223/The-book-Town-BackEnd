@@ -1,4 +1,4 @@
-import mongoose, { model } from "mongoose";
+import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
@@ -12,6 +12,10 @@ const admin = new Schema({
     required: true,
     minlength: 6,
   },
+  email: {
+    type: String,
+    required: true,
+  },
 });
 
-export default model = ("Admin", admin);
+export default mongoose.model("Admin", admin);
