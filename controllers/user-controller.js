@@ -1,11 +1,10 @@
 import User from "../model/User";
-import Request from "../model/Request";
-import mongoose from "mongoose";
+
 
 export const allRequests = async (req, res, next) => {
   let users;
   try {
-    users = await User.find();
+    users = await User.find().populate("book");
   } catch (err) {
     return console.log(err);
   }
@@ -16,12 +15,29 @@ export const allRequests = async (req, res, next) => {
 };
 //////////////////////////////////////////////////////// for USER ONLY
 export const userForm = async (req, res, next) => {
-  const { name, email, phone, books } = req.body;
+  const { name, email, phone, dateFrom, dateTo, book, isBorrow } = req.body;
+
+  let existingUser = await User.find({ email });
+  // console.log("LENGTH: ", existingUser.length);
+  try {
+    if (existingUser && existingUser.length === 4) {
+      return res.status(200).json({
+        status: 404,
+        message: "You reach your limit of borrowing books",
+      });
+    }
+  } catch (err) {
+    return console.log(err);
+  }
+
   const user = new User({
     name,
     email,
     phone,
-    books: [],
+    dateFrom,
+    dateTo,
+    book,
+    isBorrow: true,
   });
   try {
     await user.save();
@@ -46,29 +62,48 @@ export const deleteRequest = async (req, res, next) => {
   return res.status(200).json({ message: "request Deleted" });
 };
 
-export const lendRequest = async (req, res, next) => {
-  const { book, user, dateFrom, dateTo } = req.body;
-  let existingUser;
+export const deleteUser = async (req, res, next) => {
+  const id = req.params.id;
+  let userBook;
   try {
-    existingUser = await User.findById(user);
+    userBook = await User.deleteOne({ book: id });
   } catch (err) {
     return console.log(err);
   }
-  let request = new Request({
-    book,
-    user,
-    dateFrom,
-    dateTo,
-  });
-  try {
-    const session = await mongoose.startSession();
-    session.startTransaction();
-    await request.save({ session });
-    existingUser.books.push(book);
-    await existingUser.save({ session });
-    await session.commitTransaction();
-  } catch (err) {
-    return console.log(err);
-  }
-  return res.status(200).json({ request });
+  return res.status(200).json({ message: "Requested Deleted" });
 };
+
+export const updateUser = (req, res, next) => {
+  const newId = req.params.id;
+  User.findByIdAndUpdate(newId, req.body, { new: true }, (err, User) => {
+    if (err) return res.status(500).send(err);
+    return res.status(200).json(User);
+  });
+};
+
+// export const lendRequest = async (req, res, next) => {
+//   const { book, user, dateFrom, dateTo } = req.body;
+//   let existingUser;
+//   try {
+//     existingUser = await User.findById(user);
+//   } catch (err) {
+//     return console.log(err);
+//   }
+//   let request = new Request({
+//     book,
+//     user,
+//     dateFrom,
+//     dateTo,
+//   });
+//   try {
+//     const session = await mongoose.startSession();
+//     session.startTransaction();
+//     await request.save({ session });
+//     existingUser.books.push(book);
+//     await existingUser.save({ session });
+//     await session.commitTransaction();
+//   } catch (err) {
+//     return console.log(err);
+//   }
+//   return res.status(200).json({ request });
+// };

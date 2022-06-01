@@ -27,9 +27,6 @@ const bookSchema = new Schema({
     type: Boolean,
     required: true,
   },
-  pdf: {
-    type: String,
-  },
 });
 
 export default mongoose.model("Book", bookSchema);

@@ -15,13 +15,19 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  books: [
-    {
-      type: mongoose.Types.ObjectId,
-      ref: "Book",
-      required: true,
-    },
-  ],
+  dateFrom: {
+    type: Date,
+  },
+  dateTo: {
+    type: Date,
+  },
+  book: {
+    type: mongoose.Types.ObjectId,
+    ref: "Book",
+  },
+  isBorrow:{
+    type: Boolean
+  }
 });
 
 export default mongoose.model("User", userSchema);
