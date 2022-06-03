@@ -37,7 +37,7 @@ export const userForm = async (req, res, next) => {
     dateFrom,
     dateTo,
     book,
-    isBorrow: true,
+    isBorrow: false,
   });
   try {
     await user.save();

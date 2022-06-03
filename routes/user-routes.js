@@ -6,14 +6,15 @@ import {
   deleteUser,
   updateUser,
 } from "../controllers/user-controller";
+import { protect } from "../middleware/auth";
 
 const userRouter = express.Router();
 
-userRouter.get("/", allRequests); //for ADMIN
+userRouter.get("/", protect, allRequests); //for ADMIN
 userRouter.post("/user", userForm); //FOR USER frontend
-userRouter.delete("/requestDelete/:id", deleteRequest);
-userRouter.delete("/returned/:id", deleteUser);
-userRouter.put("/update/:id", updateUser);
+userRouter.delete("/requestDelete/:id", protect, deleteRequest);
+userRouter.delete("/returned/:id", protect, deleteUser);
+userRouter.put("/update/:id", protect, updateUser);
 // userRouter.post("/request", lendRequest)//For User frontend
 
 export default userRouter;

@@ -1,5 +1,7 @@
 import Admin from "../model/Admin";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import dot from "dotenv";
 
 export const getAdmin = async (req, res, next) => {
   let admin;
@@ -39,7 +41,7 @@ export const signup = async (req, res, next) => {
   } catch (err) {
     return console.log(err);
   }
-  return res.status(201).json({ admin });
+  return res.status(201).json({ admin, token: generateToken(admin._id) });
 };
 
 export const login = async (req, res, next) => {
@@ -58,7 +60,17 @@ export const login = async (req, res, next) => {
     existingAdmin.password
   );
   if (!isPasswordCorrect) {
-    return res.status(400).json({ message: "Incorrect Password" });
+    return res.status(200).json({ message: "Incorrect Password" });
   }
-  return res.status(200).json({ message: "Login Successfull" });
+  return res.status(200).json({
+    message: "Login Successfull",
+    token: generateToken(existingAdmin._id),
+  });
+};
+dot.config()
+//Generate a JWT
+export const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "30d",
+  });
 };

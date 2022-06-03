@@ -1,4 +1,5 @@
 import Book from "../model/Book";
+import upload from "../middleware/fileUpload";
 
 
 export const getAllBooks = async (req, res, next) => {
@@ -29,7 +30,9 @@ export const getById = async (req, res, next) => {
 };
 
 export const addBook = async (req, res, next) => {
-  const { title, author, description, image, category } = req.body;
+
+
+  const { title, author, description, category,image } = req.body;
   let book = new Book({
     title,
     author,
@@ -48,6 +51,7 @@ export const addBook = async (req, res, next) => {
 
 export const updateBook = (req, res, next) => {
   const newId = req.params.id;
+
   Book.findByIdAndUpdate(newId, req.body, { new: true }, (err, Book) => {
     if (err) return res.status(500).send(err);
     return res.status(200).json({ Book });
