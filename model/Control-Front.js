@@ -3,10 +3,13 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const controlFront = new Schema({
-  aboutUS: {
+  name: {
     type: String,
   },
-  banner: {
+  email: {
+    type: String,
+  },
+  message: {
     type: String,
   },
 });

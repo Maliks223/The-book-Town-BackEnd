@@ -1,6 +1,4 @@
 import Book from "../model/Book";
-import upload from "../middleware/fileUpload";
-
 
 export const getAllBooks = async (req, res, next) => {
   let books;
@@ -30,14 +28,12 @@ export const getById = async (req, res, next) => {
 };
 
 export const addBook = async (req, res, next) => {
-
-
-  const { title, author, description, category,image } = req.body;
+  const { title, author, description, category } = req.body;
   let book = new Book({
     title,
     author,
     description,
-    image,
+    image: req.file.path,
     category,
     isAvailable: true,
   });
@@ -49,13 +45,27 @@ export const addBook = async (req, res, next) => {
   return res.status(200).json({ book });
 };
 
-export const updateBook = (req, res, next) => {
-  const newId = req.params.id;
+// export const updateBook = (req, res, next) => {
+//   const newId = req.params.id;
 
-  Book.findByIdAndUpdate(newId, req.body, { new: true }, (err, Book) => {
-    if (err) return res.status(500).send(err);
-    return res.status(200).json({ Book });
-  });
+//   Book.findByIdAndUpdate(newId, req.body, { new: true }, (err, Book) => {
+//     if (err) return res.status(500).send(err);
+//     return res.status(200).json({ Book });
+//   });
+// };
+export const updateBook = async (req, res, next) => {
+  let { title, author, description, category } = req.body;
+  await Book.findByIdAndUpdate(
+    { _id: req.params.id },
+    {
+      title,
+      description,
+      author,
+      category,
+      image: req.file && req.file.path,
+    }
+  );
+  return res.status(200).json(await Book.findById(req.params.id));
 };
 
 export const deleteBook = async (req, res, next) => {
@@ -72,7 +82,6 @@ export const deleteBook = async (req, res, next) => {
   }
   return res.status(200).json({ message: "Book Deleted" });
 };
-
 
 // export const getByUserId = async (req, res, next) => {
 //   const userId = req.params.id;
@@ -92,4 +101,3 @@ export const deleteBook = async (req, res, next) => {
 //     return res.status(404).json({ message: "no Book founds" });
 //   }
 //   return res.status(200).json({ books: userBooks });
-// };
