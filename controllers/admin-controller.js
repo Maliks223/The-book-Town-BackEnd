@@ -60,14 +60,16 @@ export const login = async (req, res, next) => {
     existingAdmin.password
   );
   if (!isPasswordCorrect) {
-    return res.status(200).json({ message: "Incorrect Password" });
+    return res.status(404).json({ message: "Incorrect Password" });
   }
-  return res.status(200).json({
-    message: "Login Successfull",
-    token: generateToken(existingAdmin._id),
-  });
+  if (name && isPasswordCorrect) {
+    return res.status(200).json({
+      message: "Login Successfull",
+      token: generateToken(existingAdmin._id),
+    });
+  }
 };
-dot.config()
+dot.config();
 //Generate a JWT
 export const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
