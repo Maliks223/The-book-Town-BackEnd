@@ -36,6 +36,7 @@ export const addBook = async (req, res, next) => {
     image: req.file.path,
     category,
     isAvailable: true,
+    suspended: false,
   });
   try {
     await book.save();
@@ -54,10 +55,11 @@ export const addBook = async (req, res, next) => {
 //   });
 // };
 export const updateBook = async (req, res, next) => {
-  let { title, author, description, category } = req.body;
+  let { title, author, description, category,suspended } = req.body;
   await Book.findByIdAndUpdate(
     { _id: req.params.id },
     {
+      suspended,
       title,
       description,
       author,
