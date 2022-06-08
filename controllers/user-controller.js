@@ -20,7 +20,7 @@ export const userForm = async (req, res, next) => {
   let existingUser = await User.find({ email });
   // console.log("LENGTH: ", existingUser.length);
   try {
-    if (existingUser && existingUser.length === 4) {
+    if (existingUser && existingUser.length === 2) {
       return res.status(200).json({
         status: 404,
         message: "You reach your limit of borrowing books",

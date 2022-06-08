@@ -4,9 +4,10 @@ import adminRouter from "./routes/admin-routes";
 import bookRouter from "./routes/book-routes";
 import controlFRouter from "./routes/controlF-routes";
 import userRouter from "./routes/user-routes";
-import upload from "./middleware/fileUpload";
+// import upload from "./middleware/fileUpload";
 import cors from "cors";
 import bodyParser from "body-parser";
+import bannerRouter from "./routes/banner-route";
 
 const app = express();
 app.use(cors());
@@ -18,6 +19,7 @@ app.use("/books", bookRouter);
 app.use("/user", userRouter);
 app.use("/control", controlFRouter);
 app.use("/admin", adminRouter);
+app.use("/banner", bannerRouter);
 
 mongoose
   .connect(
