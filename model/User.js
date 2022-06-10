@@ -17,17 +17,19 @@ const userSchema = new Schema({
   },
   dateFrom: {
     type: Date,
+    required: true,
   },
   dateTo: {
     type: Date,
+    required: true,
   },
   book: {
     type: mongoose.Types.ObjectId,
     ref: "Book",
   },
-  isBorrow:{
-    type: Boolean
-  }
+  isBorrow: {
+    type: Boolean,
+  },
 });
 
 export default mongoose.model("User", userSchema);

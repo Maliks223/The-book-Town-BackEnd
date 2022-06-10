@@ -5,12 +5,15 @@ const Schema = mongoose.Schema;
 const controlFront = new Schema({
   name: {
     type: String,
+    required: true,
   },
   email: {
     type: String,
+    required: true,
   },
   message: {
     type: String,
+    required: true,
   },
 });
 

@@ -55,10 +55,11 @@ export const addBook = async (req, res, next) => {
 //   });
 // };
 export const updateBook = async (req, res, next) => {
-  let { title, author, description, category,suspended } = req.body;
+  let { title, author, description, category,suspended, isAvailable } = req.body;
   await Book.findByIdAndUpdate(
     { _id: req.params.id },
     {
+      isAvailable,
       suspended,
       title,
       description,
