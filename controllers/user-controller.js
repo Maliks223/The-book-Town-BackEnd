@@ -1,6 +1,5 @@
 import User from "../model/User";
 
-
 export const allRequests = async (req, res, next) => {
   let users;
   try {
@@ -71,6 +70,17 @@ export const deleteUser = async (req, res, next) => {
     return console.log(err);
   }
   return res.status(200).json({ message: "Requested Deleted" });
+};
+
+export const getRequest = async (req, res, next) => {
+  const id = req.params.id;
+  let userBook;
+  try {
+    userBook = await User.findOne({ book: id });
+  } catch (err) {
+    return console.log(err);
+  }
+  return res.status(200).json({ userBook });
 };
 
 export const updateUser = (req, res, next) => {
